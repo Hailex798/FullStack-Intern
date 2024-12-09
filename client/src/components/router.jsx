@@ -7,6 +7,7 @@ import SpoofChecker from "./SpoofChecker";
 import UserSettings from "./UserSettings";
 import UserManagement from "./UserManagement";
 
+
 const router = createBrowserRouter([
   {
     path: "/Signup",
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/dashboard",
+    path: `/dashboard`,
     element: <DashboardLayout />,
     children: [
     //   { path: "get-started", element: <GetStarted /> },

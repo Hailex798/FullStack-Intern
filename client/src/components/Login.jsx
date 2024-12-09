@@ -1,54 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import bgimage from "../assets/bgimage1.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  // Check if the user is already logged in
+  const handleLogin = async (event) => {
+    event.preventDefault();
 
-    const handleLogin = async (e) => {
-        navigate("/dashboard/spoofchecker");
-        // e.preventDefault();
-        // try {
-        //     const response = await fetch("http://localhost:5001/api/login", {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({ email, password }),
-        //     });
-        //
-        //     const data = await response.json();
-        //     if (response.ok) {
-        //         localStorage.setItem("token", data.token);
-        //         navigate("/dashboard/emailform");
-        //     } else {
-        //         setError(data.message);
-        //     }
-        // } catch (error) {
-        //     setError("An error occurred while logging in.");
-        // }
-    };
+    if (!email || !password) {
+      setErrorMessage("Please enter both email and password.");
+      alert("Please enter both email and password.");
+      return;
+    }
 
+    try {
+      const response = await fetch("http://localhost:4000/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    return (
+      const data = await response.json();
+      if (response.ok) {
+        alert(`Login successful: ${data.message}`);
+
+        // Redirect based on user type
+        if (data.user.userType === "user") {
+          navigate(`/dashboard/spoofchecker`);
+        }else if (data.user.userType === "agent") {
+          navigate(`/dashboard/agent`);
+        } else if (data.user.userType === "user") {
+          navigate(`/dashboard/user`);
+        }
+      } else {
+        setErrorMessage(data.message || "Login failed. Please try again.");
+        alert(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setErrorMessage("An error occurred. Please try again later.");
+      alert("An error occurred. Please try again later.");
+    }
+  };
+
+  return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="flex w-full max-w-4xl shadow-lg bg-white">
         {/* Left side - Form Section */}
         <div className="w-1/2 p-8">
           <div className="mb-6">
-            {/* <img src={Logo} alt="FirstList" className="w-25 h-12 mb-4" /> */}
-
             <h2 className="text-3xl font-bold mb-2">Login</h2>
             <p className="text-gray-500">
               Please login to continue with your account
             </p>
           </div>
 
-          {error && <p className="text-red-500">{error}</p>}
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
           <form className="space-y-4" onSubmit={handleLogin}>
             {/* Email */}
@@ -85,25 +97,10 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Remember Me Checkbox */}
-            {/* <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="mr-2"
-              />
-              <label htmlFor="rememberMe" className="text-gray-700">
-                Remember Me
-              </label>
-            </div> */}
-
             {/* Login button */}
             <button
               type="submit"
               className="w-full bg-purple-400 text-white py-2 rounded-md hover:bg-blue-400 transition"
-              onClick={handleLogin}
             >
               Login
             </button>
@@ -117,7 +114,6 @@ const Login = () => {
             </p>
           </form>
         </div>
-
       </div>
     </div>
   );

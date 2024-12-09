@@ -1,16 +1,47 @@
 import  { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import bgimage from "../assets/bgimage1.jpg";
 
 const Signup = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
+    const [formData, setFormData] = useState({
+      name: '',
+      email: '',
+      password: '',
+      userType: 'user', // Default role is set to 'user'
+    });
 
+    const handleChange = (e) => {
+      const { id, value } = e.target;
+      setFormData({ ...formData, [id]: value });
+    };
 
+    console.log(formData);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+        const response = await fetch('http://localhost:4000/user/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+  
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Network response was not ok');
+        
+        alert("User Created Successfully");
+        // Navigate back to the "/" route
+        navigate('/');
+        
+        setError(null);
+      } catch (error) {
+        console.error('Error submitting the form:', error.message);
+        setError(error.message || 'Error submitting the form. Please try again.');
+      }
+    };
 
     return (
       <div className="flex h-screen items-center justify-center bg-gray-100">
@@ -28,7 +59,7 @@ const Signup = () => {
   
             {error && <p className="text-red-500">{error}</p>}
   
-            <form className="space-y-4" >
+            <form className="space-y-4" onSubmit={handleSubmit}>
               {/* Name */}
               <div>
                 <label htmlFor="name" className="block text-gray-700">Your Name</label>
@@ -36,8 +67,8 @@ const Signup = () => {
                   type="text" 
                   id="name" 
                   placeholder="Jonas Khanwald" 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 />
               </div>
@@ -50,8 +81,8 @@ const Signup = () => {
                   type="email" 
                   id="email" 
                   placeholder="jonas.kahnwald@gmail.com" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 />
               </div>
@@ -64,8 +95,8 @@ const Signup = () => {
                     type="password" 
                     id="password" 
                     placeholder="Set your Password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
