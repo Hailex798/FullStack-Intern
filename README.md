@@ -9,6 +9,13 @@ This project showcases:
 🚀 **Context API** - For managing user data efficiently in local browser storage.  
 
 ---
+## **🌟 Assignment**  
+
+The Assignment was provided in a Google Docs file, where the frontend Code was also provided.
+
+![Assignment](./samples/Assignment.png)
+
+---
 
 ## ✨ **Features**  
 ### 🔑 **Authentication**  
