@@ -17,12 +17,6 @@ async function signup(req, res) {
             return res.status(400).json({ success: false, message: 'User already exists!' });
         }
 
-        // Verify email (check for valid email format and existence)
-        // const emailIsValid = await verifyEmail(email);
-        // if (!emailIsValid) {
-        //     return res.status(400).json({ success: false, message: 'Invalid email or email does not exist!' });
-        // }
-
         // Encrypt password
         const encryptedPassword = await bcrypt.hash(password, 10);
         console.log(encryptedPassword);

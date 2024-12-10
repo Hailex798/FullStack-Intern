@@ -86,6 +86,9 @@ Below are visual previews of the application’s various pages and features. Cli
   ---
   ## User Page User Management
   ![User Page User Management](./samples/User_UM.png)
+  ---
+  ## User Page User Settings
+  ![User Page User Settings](./samples/User_US.png)
 
 </details>
 
