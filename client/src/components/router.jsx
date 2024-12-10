@@ -6,6 +6,7 @@ import DashboardLayout from "./Layout";
 import SpoofChecker from "./SpoofChecker";
 import UserSettings from "./UserSettings";
 import UserManagement from "./UserManagement";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 const router = createBrowserRouter([
@@ -40,9 +41,13 @@ const router = createBrowserRouter([
       },
       {
         path: "usermanagement", 
-        element: <UserManagement/>, 
+        element: (
+          <ProtectedRoute>
+            <UserManagement/>
+          </ProtectedRoute>
+        ), 
       },
-      // Add other dashboard children here
+      // Add other dashboard children here  
     ],
   },
 ]);

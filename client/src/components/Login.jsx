@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from '../UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { setUserData } = useUser();
+
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
@@ -28,15 +31,18 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         alert(`Login successful: ${data.message}`);
+        
+        setUserData(data.user);
 
         // Redirect based on user type
-        if (data.user.userType === "user") {
-          navigate(`/dashboard/spoofchecker`);
-        }else if (data.user.userType === "agent") {
-          navigate(`/dashboard/agent`);
-        } else if (data.user.userType === "user") {
-          navigate(`/dashboard/user`);
-        }
+        navigate(`/dashboard`);
+        
+        // if (data.user.userType === "admin") {
+        // }else if (data.user.userType === "agent") {
+        //   navigate(`/dashboard/agent`);
+        // } else if (data.user.userType === "user") {
+        //   navigate(`/dashboard/user`);
+        // }
       } else {
         setErrorMessage(data.message || "Login failed. Please try again.");
         alert(data.message || "Login failed. Please try again.");

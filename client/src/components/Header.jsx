@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { Users, Sun, Moon } from "lucide-react"; // Import icons
 import ThemeContext from '../ThemeContext';
+import { useUser } from '../UserContext';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { userData } = useUser();
 
   // Function to handle navigation for the User Settings modal
   const toggleUserSettings = () => {
@@ -25,24 +27,26 @@ const Header = () => {
         {/* Left Section */}
         <div className="flex items-center gap-4">
           <h1 className="text-gray-600 dark:text-gray-300 font-medium text-lg">
-            Hello <span className="text-purple-600">User,</span>
+            Hello <span className="text-purple-600">{userData.userType},</span>
           </h1>
         </div>
 
         {/* Center Section */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <h1 className="text-gray-600 dark:text-gray-300 text-xl font-bold">Admin</h1>
+          <h1 className="text-gray-600 dark:text-gray-300 text-xl font-bold">{userData.userType.toUpperCase()}</h1>
         </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={toggleUserManagement}
-            className="relative text-gray-500 bg-purple-600 text-white py-2 px-4 rounded-lg hover:text-gray-300 flex items-center gap-1"
-          >
-            <Users className="w-5 h-5" />
-            <span className="text-sm font-medium">User Management</span>
-          </button>
+          {userData && (userData.userType === "admin" || userData.userType === "agent") &&
+            <button
+              onClick={toggleUserManagement}
+              className="relative text-gray-500 bg-purple-600 text-white py-2 px-4 rounded-lg hover:text-gray-300 flex items-center gap-1"
+            >
+              <Users className="w-5 h-5" />
+              <span className="text-sm font-medium">User Management</span>
+            </button> 
+          }   
 
           {/* Theme Toggle Button */}
           <button

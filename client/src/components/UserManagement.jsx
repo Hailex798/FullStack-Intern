@@ -1,6 +1,16 @@
 import React from "react";
+import { useUser } from "../UserContext";
 
 const UserManagement = () => {
+  const { userData } = useUser();
+
+  const options =
+    userData.userType === "admin"
+      ? ["User", "Agent"]
+      : userData.userType === "agent"
+      ? ["User"]
+      : [];
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 py-10 px-6">
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 shadow-lg rounded-lg p-8">
@@ -11,7 +21,9 @@ const UserManagement = () => {
 
         {/* Add New User Section */}
         <div className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-6">Add New User</h2>
+          <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-6">
+            Add New User
+          </h2>
           <form className="space-y-6">
             {/* New User's Username */}
             <div>
@@ -89,9 +101,11 @@ const UserManagement = () => {
                 id="permissions"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               >
-                <option>User</option>
-                <option>Agent</option>
-                <option>Admin</option>
+                {options.map((option) => (
+                  <option key={option} value={option.toLowerCase()}>
+                    {option}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -109,7 +123,9 @@ const UserManagement = () => {
 
         {/* Add Credits Section */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-6">Add Credits to User</h2>
+          <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-6">
+            Add Credits to User
+          </h2>
           <form className="space-y-6">
             {/* Username */}
             <div>
