@@ -2,10 +2,8 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
-import { useUser } from '../UserContext';
 
 const DashboardLayout = () => {
-  const { userData } = useUser();
 
     return (
       <div className="h-screen flex">

@@ -1,6 +1,9 @@
 import React from "react";
+import { useUser } from "../UserContext";
 
 const UserSettings = () => {
+  const { userData } = useUser();
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 flex items-center justify-center py-10 px-6">
       <div className="max-w-lg w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg p-8 text-center">
@@ -9,7 +12,7 @@ const UserSettings = () => {
 
         {/* User Info */}
         <div className="mb-6">
-          <p className="text-lg font-semibold text-gray-800 dark:text-gray-300">proxy</p>
+          <p className="text-lg font-semibold text-gray-800 dark:text-gray-300">{userData.name.toUpperCase()}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Credits: 12.0</p>
         </div>
 

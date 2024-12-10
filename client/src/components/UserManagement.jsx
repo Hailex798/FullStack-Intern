@@ -1,8 +1,11 @@
 import React from "react";
 import { useUser } from "../UserContext";
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserManagement = () => {
+  const navigate = useNavigate();
   const { userData } = useUser();
+  const [error, setError] = React.useState(null);
 
   const options =
     userData.userType === "admin"
@@ -10,6 +13,44 @@ const UserManagement = () => {
       : userData.userType === "agent"
       ? ["User"]
       : [];
+
+  const [formData, setFormData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+    userType: "user", // Default role is set to 'user'
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:4000/user/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Network response was not ok");
+
+      alert(`${formData.userType} Created Successfully`);
+      // Navigate back to the "/" route
+      navigate("/dashboard");
+
+      setError(null);
+    } catch (error) {
+      console.log(formData);
+      console.error("Error submitting the form:", error.message);
+      setError(error.message || "Error submitting the form. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 py-10 px-6">
@@ -24,7 +65,7 @@ const UserManagement = () => {
           <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-6">
             Add New User
           </h2>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* New User's Username */}
             <div>
               <label
@@ -35,6 +76,9 @@ const UserManagement = () => {
               </label>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 id="newUsername"
                 placeholder="Enter new user's username"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -52,6 +96,9 @@ const UserManagement = () => {
               <input
                 type="password"
                 id="newPassword"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 placeholder="Enter new user's password"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
@@ -67,7 +114,10 @@ const UserManagement = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 id="newEmail"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Enter new user's email"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
@@ -100,6 +150,9 @@ const UserManagement = () => {
               <select
                 id="permissions"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                name="userType"
+                value={formData.userType}
+                onChange={handleChange}
               >
                 {options.map((option) => (
                   <option key={option} value={option.toLowerCase()}>

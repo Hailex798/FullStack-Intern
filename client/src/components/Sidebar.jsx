@@ -1,18 +1,22 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-
+import { NavLink, useNavigate } from "react-router-dom";
+import { useUser } from "../UserContext";
 import {
   LayoutDashboard,
   SquareCheckBig,
-  Mails,
-  Send,
-  Logs,
-  Waypoints,
   LogOut,
   MessageSquare,
 } from "lucide-react";
 
 const Sidebar = () => {
+  const { logout } = useUser(); // Access the logout function
+  const navigate = useNavigate(); // For navigation after logout
+
+  const handleLogout = () => {
+    logout(); // Call the logout function
+    navigate("/"); // Redirect to the login page
+  };
+
   return (
     <aside className="h-full w-64 bg-gray-50 dark:bg-gray-900 shadow-lg flex flex-col justify-between p-6">
       {/* Top Section */}
@@ -27,7 +31,6 @@ const Sidebar = () => {
 
         {/* Menu Items */}
         <ul className="space-y-6">
-
           <li>
             <NavLink
               to="/dashboard/spoofchecker"
@@ -43,26 +46,19 @@ const Sidebar = () => {
               Spoof Checker
             </NavLink>
           </li>
-
         </ul>
 
         <div className="border-t my-6 border-gray-200 dark:border-gray-700"></div>
 
         <ul className="space-y-6">
           <li>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                `flex items-center gap-3 text-sm font-medium p-3 rounded-lg ${
-                  isActive
-                    ? "text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-800"
-                    : "text-gray-600 dark:text-gray-300 hover:bg-red-300 dark:hover:bg-red-700"
-                }`
-              }
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 text-sm font-medium p-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-red-300 dark:hover:bg-red-700"
             >
               <LogOut className="w-5 h-5" />
               Logout
-            </NavLink>
+            </button>
           </li>
         </ul>
       </div>
