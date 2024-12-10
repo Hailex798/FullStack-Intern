@@ -30,7 +30,7 @@ const UserManagement = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4000/user/signup", {
+      const response = await fetch("https://fullstack-intern-user-management-backend.onrender.com/user/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

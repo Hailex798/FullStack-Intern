@@ -20,7 +20,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/user/login", {
+      const response = await fetch("https://fullstack-intern-user-management-backend.onrender.com/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,7 @@ const Login = () => {
 
         // Redirect based on user type
         navigate(`/dashboard`);
-        
+
         // if (data.user.userType === "admin") {
         // }else if (data.user.userType === "agent") {
         //   navigate(`/dashboard/agent`);
