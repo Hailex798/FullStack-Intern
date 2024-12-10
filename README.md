@@ -1,5 +1,8 @@
 # 🎉 **User Management System** - MERN Stack Assignment  
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-FULLSTACKINTERN.VERCEL.APP-green?style=for-the-badge)](https://fullstackintern.vercel.app/)  
+[![GitHub Repo](https://img.shields.io/badge/Source%20Code-FullStackIntern-black?style=for-the-badge)](https://github.com/Hailex798/FullStack-Intern)  
+
 ### **🌟 Overview**  
 Welcome to the **User Management System**, a full-stack web application built using the **MERN Stack** (MongoDB, Express.js, React.js, Node.js).  
 
@@ -44,6 +47,8 @@ Depending on their role, users have access to different functionalities:
 ## 🎨 **Visual Overview**
 
 Below are visual previews of the application’s various pages and features. Click on the dropdown arrows to view the corresponding screenshots.
+
+*Visit the [Live Site](https://fullstackintern.vercel.app/) for a full experience!* 🌐
 
 ## Login Page
 ![Login Page](./samples/Login_Page.png)
